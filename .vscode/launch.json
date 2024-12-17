@@ -8,7 +8,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Launch",
-            "program": "${workspaceFolder}/build/bin/my_program.exe",
+            "program": "${workspaceFolder}/build/bin/scram_ext.exe",
             "args": [],
             "cwd": "${workspaceFolder}"
         },
@@ -16,7 +16,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/build/bin/my_program.exe",
+            "program": "${workspaceFolder}/build/bin/scram_ext.exe",
             "args": [],
             "cwd": "${workspaceFolder}"
         }
