@@ -65,10 +65,12 @@ install(
 ####################### End SCRAM core lib config ##################### }}}
 
 ####################### Begin SCRAM CLI config ##################### {{{
+# add_executable(scram-cli main.cpp)
 add_executable(scram-cli scram.cc)
 set_target_properties(scram-cli PROPERTIES OUTPUT_NAME scram)
-target_link_libraries(scram-cli scram ${Boost_LIBRARIES})
-target_compile_options(scram-cli PRIVATE $<$<CONFIG:DEBUG>:${SCRAM_CXX_FLAGS_DEBUG}>)
+message(STATUS "LIBXML2_LIBRARIES: ${LIBXML2_LIBRARIES}")
+target_link_libraries(scram-cli scram ${Boost_LIBRARIES} ${LIBXML2_LIBRARIES})
+# target_compile_options(scram-cli PRIVATE $<$<CONFIG:DEBUG>:${SCRAM_CXX_FLAGS_DEBUG}>)
 
 install(
   TARGETS scram-cli

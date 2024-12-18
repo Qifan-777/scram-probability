@@ -1,14 +1,11 @@
-cmake_minimum_required(VERSION 3.15)
+# vim: set foldmarker={{{,}}} foldlevel=0 foldmethod=marker:
+cmake_minimum_required(VERSION 3.8)
+
+# In-source build prevention.
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+
 project(SCRAM VERSION 0.16.2 LANGUAGES CXX)
-
-# 设置 C++ 标准
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_COMPILER "clang++")
-
-set(CMAKE_PREFIX_PATH "D:/tools/CPP/vcpkg/installed/x64-windows")
-# 设置构建目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 ####################### Begin Options ################### {{{
 
@@ -18,7 +15,6 @@ option(WITH_JEMALLOC "Use JEMalloc if available (#2 preference)" ON)
 option(WITH_COVERAGE "Instrument for coverage analysis" OFF)
 option(WITH_PROFILE "Instrument for performance profiling" OFF)
 
-option(BUILD_GUI "Build the GUI front-end" OFF)
 option(BUILD_TESTING "Build the tests" OFF)  # Influences CTest.
 
 option(PACKAGE "Package for distribution" OFF)
@@ -33,6 +29,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)  # Needed for Clang Tooling.
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_PREFIX_PATH "D:/tools/CPP/vcpkg/installed/x64-windows")
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+  add_compile_options(-w)  # 关闭所有警告
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+  add_compile_options(/W0) # 关闭所有警告
+endif()
 
 function(CHECK_COMPILER_VERSION MIN_VERSION)
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS MIN_VERSION)
@@ -90,13 +95,48 @@ if(CCACHE_FOUND)
   set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
 endif()
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    add_compile_options(-w)  # 关闭所有警告
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    add_compile_options(/W0) # 关闭所有警告
+######################## End compiler configurations #################### }}}
+
+##################### Begin cmake configuration ################### {{{
+
+include(CTest)
+
+# Setup build locations.
+if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${SCRAM_BINARY_DIR}/bin")
+endif()
+if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${SCRAM_BINARY_DIR}/lib/scram")
+endif()
+if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${SCRAM_BINARY_DIR}/lib/scram")
 endif()
 
-######################## End compiler configurations #################### }}}
+if(WIN32)
+  set(CMAKE_SKIP_RPATH TRUE)
+else()
+  # Use, i.e. don't skip the full RPATH for the build tree.
+  set(CMAKE_SKIP_BUILD_RPATH FALSE)
+
+  # When building,
+  # don't use the install RPATH already
+  # (but later on when installing).
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+
+  set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/scram")
+  set(CMAKE_INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib/scram")
+
+  # Add the automatically determined parts of the RPATH,
+  # which point to directories outside the build tree
+  # to the install RPATH.
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+endif()
+
+# Tell CMake where the modules are.
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+######################## End cmake configuration ################### }}}
+
 ######################## Begin find libraries ###################### {{{
 
 set(MALLOC "System Malloc")
