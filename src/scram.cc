@@ -297,24 +297,24 @@ void RunScram(const po::variables_map& vm) {
 /// @param[in] ...  The variadic arguments for the format string.
 ///
 /// @pre The library strictly follows validity conditions of printf.
-extern "C" void LogXmlError(void* /*ctx*/, const char* msg, ...) noexcept {
-  std::va_list args;
-  va_start(args, msg);
-  SCOPE_EXIT([&args] { va_end(args); });
+// extern "C" void LogXmlError(void* /*ctx*/, const char* msg, ...) noexcept {
+//   std::va_list args;
+//   va_start(args, msg);
+//   SCOPE_EXIT([&args] { va_end(args); });
 
-  std::va_list args_for_nchar;  // Only used to determine the string length.
-  va_copy(args_for_nchar, args);
-  int nchar = std::vsnprintf(nullptr, 0, msg, args_for_nchar);
-  va_end(args_for_nchar);
-  if (nchar < 0) {
-    LOG(scram::ERROR) << "String formatting failure: " << std::strerror(errno);
-    return;
-  }
+//   std::va_list args_for_nchar;  // Only used to determine the string length.
+//   va_copy(args_for_nchar, args);
+//   int nchar = std::vsnprintf(nullptr, 0, msg, args_for_nchar);
+//   va_end(args_for_nchar);
+//   if (nchar < 0) {
+//     LOG(scram::ERROR) << "String formatting failure: " << std::strerror(errno);
+//     return;
+//   }
 
-  std::vector<char> buffer(nchar + /*null terminator*/ 1);
-  std::vsnprintf(buffer.data(), buffer.size(), msg, args);
-  LOG(scram::WARNING) << buffer.data();
-}
+//   std::vector<char> buffer(nchar + /*null terminator*/ 1);
+//   std::vsnprintf(buffer.data(), buffer.size(), msg, args);
+//   LOG(scram::WARNING) << buffer.data();
+// }
 
 /// Prints error information into the standard error.
 ///
@@ -338,12 +338,13 @@ void PrintErrorInfo(const char* tag_string, const scram::Error& err) {
 /// @returns 0 for success.
 /// @returns 1 for errored state.
 int main(int argc, char* argv[]) {
+  int i = 1;
   LIBXML_TEST_VERSION
   xmlInitParser();
   SCOPE_EXIT(&xmlCleanupParser);
 
-  xmlGenericErrorFunc xml_error_printer = LogXmlError;
-  initGenericErrorDefaultFunc(&xml_error_printer);
+  // xmlGenericErrorFunc xml_error_printer = LogXmlError;
+  // initGenericErrorDefaultFunc(&xml_error_printer);
 
   try {
     // Parse command-line options.
@@ -352,55 +353,55 @@ int main(int argc, char* argv[]) {
     if (ret == 1)
       return 1;
 
-    if (vm.count("verbosity")) {
-      scram::Logger::report_level(
-          static_cast<scram::LogLevel>(vm["verbosity"].as<int>()));
-    }
+    // if (vm.count("verbosity")) {
+    //   scram::Logger::report_level(
+    //       static_cast<scram::LogLevel>(vm["verbosity"].as<int>()));
+    // }
 
-    if (ret == 0)
-      RunScram(vm);
-  } catch (const scram::LogicError& err) {
-    LOG(scram::ERROR) << "Logic Error:\n" << boost::diagnostic_information(err);
-    return 1;
-  } catch (const scram::IOError& err) {
-    LOG(scram::DEBUG1) << boost::diagnostic_information(err);
-    std::cerr << boost::core::demangled_name(typeid(err)) << "\n\n";
-    PrintErrorInfo<boost::errinfo_file_name>("File", err);
-    PrintErrorInfo<boost::errinfo_file_open_mode>("Open mode", err);
-    if (const int* errnum = boost::get_error_info<boost::errinfo_errno>(err)) {
-      std::cerr << "Error code: " << *errnum << "\n";
-      std::cerr << "Error string: " << std::strerror(*errnum) << "\n";
-    }
-    std::cerr << "\n" << err.what() << std::endl;
-    return 1;
-  } catch (const scram::Error& err) {
-    using namespace scram;  // NOLINT
-    LOG(DEBUG1) << boost::diagnostic_information(err);
-    std::cerr << boost::core::demangled_name(typeid(err)) << "\n\n";
-    PrintErrorInfo<errinfo_value>("Value", err);
-    PrintErrorInfo<boost::errinfo_file_name>("File", err);
-    PrintErrorInfo<boost::errinfo_at_line>("Line", err);
-    PrintErrorInfo<mef::errinfo_connective>("MEF Connective", err);
-    PrintErrorInfo<mef::errinfo_reference>("MEF reference", err);
-    PrintErrorInfo<mef::errinfo_base_path>("MEF base path", err);
-    PrintErrorInfo<mef::errinfo_element_id>("MEF Element ID", err);
-    PrintErrorInfo<mef::errinfo_element_type>("MEF Element type", err);
-    PrintErrorInfo<mef::errinfo_container_id>("MEF Container", err);
-    PrintErrorInfo<mef::errinfo_container_type>("MEF Container type", err);
-    PrintErrorInfo<mef::errinfo_attribute>("MEF Attribute", err);
-    PrintErrorInfo<mef::errinfo_cycle>("Cycle", err);
-    PrintErrorInfo<xml::errinfo_element>("XML element", err);
-    PrintErrorInfo<xml::errinfo_attribute>("XML attribute", err);
-    std::cerr << "\n" << err.what() << std::endl;
-    return 1;
-  } catch (const boost::exception& boost_err) {
-    LOG(scram::ERROR) << "Unexpected Boost Exception:\n"
-                      << boost::diagnostic_information(boost_err);
-    return 1;
+    // if (ret == 0)
+    //   RunScram(vm);
+  // } catch (const scram::LogicError& err) {
+  //   LOG(scram::ERROR) << "Logic Error:\n" << boost::diagnostic_information(err);
+  //   return 1;
+  // } catch (const scram::IOError& err) {
+  //   LOG(scram::DEBUG1) << boost::diagnostic_information(err);
+  //   std::cerr << boost::core::demangled_name(typeid(err)) << "\n\n";
+  //   PrintErrorInfo<boost::errinfo_file_name>("File", err);
+  //   PrintErrorInfo<boost::errinfo_file_open_mode>("Open mode", err);
+  //   if (const int* errnum = boost::get_error_info<boost::errinfo_errno>(err)) {
+  //     std::cerr << "Error code: " << *errnum << "\n";
+  //     std::cerr << "Error string: " << std::strerror(*errnum) << "\n";
+  //   }
+  //   std::cerr << "\n" << err.what() << std::endl;
+  //   return 1;
+  // } catch (const scram::Error& err) {
+  //   using namespace scram;  // NOLINT
+  //   LOG(DEBUG1) << boost::diagnostic_information(err);
+  //   std::cerr << boost::core::demangled_name(typeid(err)) << "\n\n";
+  //   PrintErrorInfo<errinfo_value>("Value", err);
+  //   PrintErrorInfo<boost::errinfo_file_name>("File", err);
+  //   PrintErrorInfo<boost::errinfo_at_line>("Line", err);
+  //   PrintErrorInfo<mef::errinfo_connective>("MEF Connective", err);
+  //   PrintErrorInfo<mef::errinfo_reference>("MEF reference", err);
+  //   PrintErrorInfo<mef::errinfo_base_path>("MEF base path", err);
+  //   PrintErrorInfo<mef::errinfo_element_id>("MEF Element ID", err);
+  //   PrintErrorInfo<mef::errinfo_element_type>("MEF Element type", err);
+  //   PrintErrorInfo<mef::errinfo_container_id>("MEF Container", err);
+  //   PrintErrorInfo<mef::errinfo_container_type>("MEF Container type", err);
+  //   PrintErrorInfo<mef::errinfo_attribute>("MEF Attribute", err);
+  //   PrintErrorInfo<mef::errinfo_cycle>("Cycle", err);
+  //   PrintErrorInfo<xml::errinfo_element>("XML element", err);
+  //   PrintErrorInfo<xml::errinfo_attribute>("XML attribute", err);
+  //   std::cerr << "\n" << err.what() << std::endl;
+  //   return 1;
+  // } catch (const boost::exception& boost_err) {
+  //   LOG(scram::ERROR) << "Unexpected Boost Exception:\n"
+  //                     << boost::diagnostic_information(boost_err);
+  //   return 1;
   } catch (const std::exception& err) {
-    LOG(scram::ERROR) << "Unexpected Exception: "
-                      << boost::core::demangled_name(typeid(err)) << ":\n"
-                      << err.what();
+    // LOG(scram::ERROR) << "Unexpected Exception: "
+    //                   << boost::core::demangled_name(typeid(err)) << ":\n"
+    //                   << err.what();
     return 1;
   }
 }  // End of main.

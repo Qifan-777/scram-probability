@@ -37,6 +37,7 @@
 #include "logger.h"
 #include "model.h"
 #include "substitution.h"
+#include <array>
 
 namespace scram::core {
 
