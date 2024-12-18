@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "exception": "cpp",
+        "unordered_set": "cpp",
+        "array": "cpp"
+    }
+}
