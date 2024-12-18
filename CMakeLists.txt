@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(MyProject LANGUAGES CXX)
+project(SCRAM VERSION 0.16.2 LANGUAGES CXX)
 
 # 设置 C++ 标准
 set(CMAKE_CXX_STANDARD 17)
@@ -88,6 +88,12 @@ if(CCACHE_FOUND)
   message(STATUS "Using CCache for builds")
   set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
   set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+endif()
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+    add_compile_options(-w)  # 关闭所有警告
+elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    add_compile_options(/W0) # 关闭所有警告
 endif()
 
 ######################## End compiler configurations #################### }}}
