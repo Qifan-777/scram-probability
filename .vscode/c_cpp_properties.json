@@ -3,9 +3,9 @@
         {
             "name": "Win32",
             "includePath": [
+                "D:/tools/CPP/vcpkg/installed/x64-windows/include/**",
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/src/**",
-                "D:/tools/CPP/vcpkg/installed/x64-windows/include/**"
+                "${workspaceFolder}/src/**"
             ],
             "defines": [
                 "_DEBUG",
