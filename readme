@@ -1,3 +1,0 @@
-# cmake命令
-* cmake -G "Ninja"  .. 
-* 进入build目录后，cmake -G "Ninja" ..
