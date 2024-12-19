@@ -16,9 +16,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "externalConsole": false, 
-            "stopAtEntry": true, 
-            "program": "${workspaceFolder}/build/bin/scram.exe",
+            "program": "${workspaceFolder}/build//bin/scram.exe",
             "args": [],
             "cwd": "${workspaceFolder}"
         }
