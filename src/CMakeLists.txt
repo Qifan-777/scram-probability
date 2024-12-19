@@ -51,7 +51,7 @@ set(SCRAM_CORE_SRC
   risk_analysis.cc
   )
 ### End SCRAM core source list ### }}}
-add_library(scram SHARED ${SCRAM_CORE_SRC})
+add_library(scram ${SCRAM_CORE_SRC})
 target_link_libraries(scram ${LIBS})
 target_compile_options(scram PRIVATE $<$<CONFIG:DEBUG>:${SCRAM_CXX_FLAGS_DEBUG}>)
 
@@ -68,9 +68,8 @@ install(
 # add_executable(scram-cli main.cpp)
 add_executable(scram-cli scram.cc)
 set_target_properties(scram-cli PROPERTIES OUTPUT_NAME scram)
-message(STATUS "LIBXML2_LIBRARIES: ${LIBXML2_LIBRARIES}")
 target_link_libraries(scram-cli scram ${Boost_LIBRARIES} ${LIBXML2_LIBRARIES})
-# target_compile_options(scram-cli PRIVATE $<$<CONFIG:DEBUG>:${SCRAM_CXX_FLAGS_DEBUG}>)
+target_compile_options(scram-cli PRIVATE $<$<CONFIG:DEBUG>:${SCRAM_CXX_FLAGS_DEBUG}>)
 
 install(
   TARGETS scram-cli
