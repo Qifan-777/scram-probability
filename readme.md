@@ -32,7 +32,10 @@
 * 在使用编译出来的exe时，有的时候会出现exe无法启动的情况，而且没有任何报错，这个时候可以尝试使用administrator权限的命令行打开exe文件，这个时候就会出现缺少哪些dll的弹窗了
 
 # 使用说明
+* cut-off 限制最小概率
+* limit-order 限制最小割集的阶数
 ```
 scram.exe --bdd --probability --importance --uncertainty --cut-off 1e-20 C:\Users\hu_an\Desktop\11.xml > C:\Users\hu_an\Desktop\11report.xml
+.\bin\scram.exe --bdd --probability --importance --uncertainty --cut-off 1e-15 --limit-order 3 D:\smart\scram\fta_testing_data\available_tree\P08.xml
 输入文件路径不能有中文
 ```
