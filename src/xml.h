@@ -155,7 +155,7 @@ inline std::string_view trim(const std::string_view& text) noexcept {
 template <typename T>
 T GetError(xmlErrorPtr xml_error = nullptr) {
   if (!xml_error)
-    xml_error = const_cast<xmlErrorPtr>(xmlGetLastError());
+    xml_error = const_cast<xmlErrorPtr>(xmlGetLastError());;
   assert(xml_error && "No XML error is available.");
   T throw_error(xml_error->message);
   if (xml_error->file)
