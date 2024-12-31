@@ -5,19 +5,20 @@ cmake_minimum_required(VERSION 3.8)
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
-project(SCRAM VERSION 0.16.2 LANGUAGES CXX)
+project(SCRAM VERSION 0.17.0 LANGUAGES CXX)
 
 ####################### Begin Options ################### {{{
 
-option(WITH_TCMALLOC "Use TCMalloc if available (#1 preference)" ON)
-option(WITH_JEMALLOC "Use JEMalloc if available (#2 preference)" ON)
+option(WITH_TCMALLOC "Use TCMalloc if available (#1 preference)" OFF)
+option(WITH_JEMALLOC "Use JEMalloc if available (#2 preference)" OFF)
 
 option(WITH_COVERAGE "Instrument for coverage analysis" OFF)
 option(WITH_PROFILE "Instrument for performance profiling" OFF)
 
+option(BUILD_GUI "Build the GUI front-end" OFF)
 option(BUILD_TESTING "Build the tests" OFF)  # Influences CTest.
 
-option(PACKAGE "Package for distribution" OFF)
+option(PACKAGE "Package for distribution" ON)
 
 ####################### End Options ##################### }}}
 
@@ -29,14 +30,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)  # Needed for Clang Tooling.
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-  add_compile_options(-w)  # 关闭所有警告
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-  add_compile_options(/W0) # 关闭所有警告
-endif()
 
 function(CHECK_COMPILER_VERSION MIN_VERSION)
   if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS MIN_VERSION)
@@ -187,5 +180,14 @@ include_directories(SYSTEM "${LIBXML2_INCLUDE_DIR}")
 include_directories("${CMAKE_SOURCE_DIR}")  # Include the core headers via "src".
 
 add_subdirectory(src)
+add_subdirectory(share)
+
+if(BUILD_GUI)
+  add_subdirectory(gui)
+endif()
+
+if(BUILD_TESTING)
+  add_subdirectory(tests)
+endif()
 
 ####################### End includes #################################### }}}
