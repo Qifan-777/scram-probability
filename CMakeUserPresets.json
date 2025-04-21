@@ -2,8 +2,15 @@
   "version": 2,
   "configurePresets": [
     {
-      "name": "default",
-      "inherits": "vcpkg",
+      "name": "release",
+      "inherits": "scram-release",
+      "environment": {
+        "VCPKG_ROOT": "D:/tools/CPP/vcpkg"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "scram-debug",
       "environment": {
         "VCPKG_ROOT": "D:/tools/CPP/vcpkg"
       }
