@@ -16,8 +16,14 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/build//bin/scram.exe",
-            "args": [],
+            "program": "${workspaceFolder}/build/bin/scram.exe",
+            "args": [
+                "--bdd",
+                // "D:/smart/scram/fta_testing_data/可以通过校验的树/P08.xml"
+                "--probability",
+                "--importance", "--uncertainty", "--cut-off", "1e-20",
+                "D:/1.xml"
+            ],
             "cwd": "${workspaceFolder}"
         }
     ]

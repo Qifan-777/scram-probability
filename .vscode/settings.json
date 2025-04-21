@@ -87,6 +87,22 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "any": "cpp",
+        "bitset": "cpp",
+        "cinttypes": "cpp",
+        "coroutine": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "cwctype": "cpp",
+        "execution": "cpp",
+        "resumable": "cpp",
+        "future": "cpp",
+        "numeric": "cpp",
+        "regex": "cpp",
+        "scoped_allocator": "cpp",
+        "stack": "cpp",
+        "valarray": "cpp",
+        "*.ipp": "cpp"
     }
 }
