@@ -14,6 +14,20 @@
       "environment": {
         "VCPKG_ROOT": "D:/tools/CPP/vcpkg"
       }
+    },
+    {
+      "name": "release-linux",
+      "inherits": "scram-release-linux",
+      "environment": {
+        "VCPKG_ROOT": "/root/vcpkg"
+      }
+    },
+    {
+      "name": "debug-linux",
+      "inherits": "scram-debug-linux",
+      "environment": {
+        "VCPKG_ROOT": "/root/vcpkg"
+      }
     }
   ]
 }

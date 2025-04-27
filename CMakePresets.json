@@ -20,6 +20,28 @@
         "CMAKE_INSTALL_PREFIX": "D:/smart/scram/scram_install",
         "CMAKE_BUILD_TYPE": "debug"
       }
+    },
+    {
+      "name": "scram-release-linux",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/scram_install",
+        "CMAKE_MAKE_PROGRAM": "/usr/bin/ninja",
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "scram-debug-linux",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/scram_install",
+        "CMAKE_MAKE_PROGRAM": "/usr/bin/ninja",
+        "CMAKE_BUILD_TYPE": "debug"
+      }
     }
   ]
 }
