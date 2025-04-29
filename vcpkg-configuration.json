@@ -1,14 +1,7 @@
 {
   "default-registry": {
     "kind": "git",
-    "baseline": "b545373a9a536dc559dac8583467a21497a0e897",
-    "repository": "https://github.com/microsoft/vcpkg"
-  },
-  "registries": [
-    {
-      "kind": "artifact",
-      "location": "https://github.com/microsoft/vcpkg-ce-catalog/archive/refs/heads/main.zip",
-      "name": "microsoft"
-    }
-  ]
+    "baseline": "761c81d43335a5d5ccc2ec8ad90bd7e2cbba734e",
+    "repository": "http://jihu.devops.org/huchenpeng/smartree-engine-build-vcpkg.git"
+  }
 }
