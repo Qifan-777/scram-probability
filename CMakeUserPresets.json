@@ -19,14 +19,14 @@
       "name": "release-linux",
       "inherits": "scram-release-linux",
       "environment": {
-        "VCPKG_ROOT": "/root/vcpkg"
+        "VCPKG_ROOT": "/root/smartree-engine-build-vcpkg"
       }
     },
     {
       "name": "debug-linux",
       "inherits": "scram-debug-linux",
       "environment": {
-        "VCPKG_ROOT": "/root/vcpkg"
+        "VCPKG_ROOT": "/root/smartree-engine-build-vcpkg"
       }
     }
   ]
