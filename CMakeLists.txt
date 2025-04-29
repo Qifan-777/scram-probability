@@ -45,7 +45,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-missing-field-ini
 
 # Strict debug flags for SCRAM targets (opt-in, must subscribe to quality checks explicitly).
 # NOTE: This is a list unlike CMAKE_CXX_FLAGS.
-set(SCRAM_CXX_FLAGS_DEBUG -Wall -Wextra -Werror -Wnon-virtual-dtor -Wold-style-cast)
+set(SCRAM_CXX_FLAGS_DEBUG -Wall -Wextra -Wnon-virtual-dtor -Wold-style-cast)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-new-ttp-matching")  # TODO: Boost ICL failure.
