@@ -22,6 +22,8 @@ sudo ln -s /usr/bin/clang-18 /usr/bin/clang
 ## vcpkg
 * 下载 git clone https://github.com/microsoft/vcpkg.git
 * 进入vcpkg目录，执行./bootstrap-vcpkg.sh
+* 进入vcpkg目录下的versions目录，找到versions/b-/boost.json文件
+* 查看boost.json文件的commit log，找到[boost] update to 1.79.0 (#24210) 类型的提交，其对应的commit ID就可以作为vcpkg-configuration.json的baseline使用
 
 ## 构建
 * 进入scram_ext cmake --preset=debug-linux
