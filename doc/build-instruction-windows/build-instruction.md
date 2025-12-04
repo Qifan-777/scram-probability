@@ -19,3 +19,7 @@
 set(VCPKG_PLATFORM_TOOLSET v142)
 ```
 ![](./img/vcpkg_triplets_config2.png)
+
+# 需要修改的依赖项目录配置
+* .vscode/c_cpp_properties.json中的compilerPath
+* vcpkg-configuration.json中的vcpkg repo的路径
