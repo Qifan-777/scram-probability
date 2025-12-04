@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "D:/tools/CPP/vcpkg/installed/x64-windows/include/**",
+                "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.29.30133/include",
+                "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.29.30133/atlmfc/include",
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/**"
             ],
@@ -13,7 +14,7 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.26100.0",
-            "compilerPath": "D:/tools/CPP/clang+llvm-18.1.8-x86_64-pc-windows-msvc/bin/clang++.exe",
+            "compilerPath": "D:/work/tools/CPP/clang+llvm-18.1.8-x86_64-pc-windows-msvc/bin/clang++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-clang-x64",

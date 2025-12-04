@@ -5,14 +5,14 @@
       "name": "release",
       "inherits": "scram-release",
       "environment": {
-        "VCPKG_ROOT": "D:/tools/CPP/vcpkg"
+        "VCPKG_ROOT": "D:/work/tools/cpp/smartree-engine-build-vcpkg"
       }
     },
     {
       "name": "debug",
       "inherits": "scram-debug",
       "environment": {
-        "VCPKG_ROOT": "D:/tools/CPP/vcpkg"
+        "VCPKG_ROOT": "D:/work/tools/cpp/smartree-engine-build-vcpkg"
       }
     },
     {
