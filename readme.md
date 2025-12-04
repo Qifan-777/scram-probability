@@ -28,6 +28,12 @@
 * cmake --preset=release,配置release版本的cmake
 * cmake --preset=debug, 配置debug版本的cmake
 * 进入build目录后，ninja -j8
+* windows相关的构建配置依赖需要参考doc目录下的build-instruction-windows
+
+# 调试说明
+* 需要依赖的插件为
+- CodeLLDB
+- C/C++ microsoft
 
 # 故障排查
 * 在使用编译出来的exe时，有的时候会出现exe无法启动的情况，而且没有任何报错，这个时候可以尝试使用administrator权限的命令行打开exe文件，这个时候就会出现缺少哪些dll的弹窗了
