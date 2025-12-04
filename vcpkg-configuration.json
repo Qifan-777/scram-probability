@@ -2,6 +2,6 @@
   "default-registry": {
     "kind": "git",
     "baseline": "761c81d43335a5d5ccc2ec8ad90bd7e2cbba734e",
-    "repository": "http://jihu.devops.org/huchenpeng/smartree-engine-build-vcpkg.git"
+    "repository": "file:///D://work//tools//cpp//smartree-engine-build-vcpkg"
   }
 }
