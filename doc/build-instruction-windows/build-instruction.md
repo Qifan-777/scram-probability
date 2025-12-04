@@ -20,6 +20,22 @@ set(VCPKG_PLATFORM_TOOLSET v142)
 ```
 ![](./img/vcpkg_triplets_config2.png)
 
+## 配置powershell的msvc版本
+* 默认情况下，powershell会查找当前系统中安装的最新版本的msvc
+* cmd时代，可以使用下面的脚本进行msvc的版本切换，但是powershell里会无法生效
+```
+"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64 -vcvars_ver=14.29.30133
+```
+* powershell需要使用下面的方式切换当前激活的msvc版本到v142
+```
+Import-Module "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"; Enter-VsDevShell -VsInstallPath "C:\Program Files\Microsoft Visual Studio\2022\Community" -DevCmdArguments "-arch=amd64 -host_arch=amd64 -vcvars_ver=14.29.30133"
+```
+* msvc的具体版本可以在该路径下查看
+```
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC
+```
+* 激活完成后，可以使用cl命令确认当前的msvc版本号
+
 # 需要修改的依赖项目录配置
 * .vscode/c_cpp_properties.json中的compilerPath
 * vcpkg-configuration.json中的vcpkg repo的路径
