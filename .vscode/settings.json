@@ -104,5 +104,6 @@
         "stack": "cpp",
         "valarray": "cpp",
         "*.ipp": "cpp"
-    }
+    },
+    "C_Cpp.intelliSenseEngine": "default",
 }
