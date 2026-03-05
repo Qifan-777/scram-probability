@@ -43,9 +43,9 @@
 | 项目名称 | SCRAM | fta-engine |
 | 可执行文件 | scram | fta-engine |
 | CLI程序 | scram-cli | fta-engine-cli |
-| 静态库 | libscram.a | libftaengine.a |
-| 动态库 | libscram.so | libftaengine.so |
-| 命名空间 | `namespace scram` | `namespace ftaengine` |
+| 静态库 | libscram.a | libftae.a |
+| 动态库 | libscram.so | libftae.so |
+| 命名空间 | `namespace scram` | `namespace ftae` |
 | 宏前缀 | `SCRAM_*` | `FTAE_*` |
 | 版本宏 | `SCRAM_VERSION` | `FTAE_VERSION` |
 | 异常宏 | `SCRAM_THROW` | `FTAE_THROW` |
@@ -70,20 +70,20 @@ option(FTAE_ENABLE_JEMALLOC "Use JEMalloc" OFF)
 option(FTAE_ENABLE_COVERAGE "Enable coverage reporting" OFF)
 
 # 包含模块
-include(FtaeCompilerFlags)
-include(FtaeDependencies)
+include(FTAECompilerFlags)
+include(FTAEDependencies)
 ```
 
 **src/CMakeLists.txt:**
 ```cmake
 # 库名称更新
-add_library(ftaengine STATIC $<TARGET_OBJECTS:ftaengine_core>)
-target_link_libraries(ftaengine PUBLIC ftaengine_core)
+add_library(ftae STATIC $<TARGET_OBJECTS:ftae_core>)
+target_link_libraries(ftae PUBLIC ftae_core)
 
 # 可执行文件
-add_executable(ftaengine-cli cli/main.cpp)
-target_link_libraries(ftaengine-cli PRIVATE ftaengine)
-set_target_properties(ftaengine-cli PROPERTIES OUTPUT_NAME fta-engine)
+add_executable(ftae-cli cli/main.cpp)
+target_link_libraries(ftae-cli PRIVATE ftae)
+set_target_properties(ftae-cli PROPERTIES OUTPUT_NAME fta-engine)
 ```
 
 ### 2.4 命名空间更新
@@ -96,32 +96,32 @@ namespace scram::mef { ... }
 namespace scram::core { ... }
 
 // 之后
-namespace ftaengine { ... }
-namespace ftaengine::model { ... }
-namespace ftaengine::analysis { ... }
-namespace ftaengine::expression { ... }
-namespace ftaengine::io { ... }
+namespace ftae { ... }
+namespace ftae::model { ... }
+namespace ftae::analysis { ... }
+namespace ftae::expression { ... }
+namespace ftae::io { ... }
 ```
 
 ### 2.5 宏定义更新
 
 **error.h:**
 ```cpp
-namespace ftaengine {
+namespace ftae {
 
 #define FTAE_THROW(err) \
     throw err << ::boost::throw_function(BOOST_CURRENT_FUNCTION) \
               << ::boost::throw_file(FILE_REL_PATH) \
               << ::boost::throw_line(__LINE__)
 
-} // namespace ftaengine
+} // namespace ftae
 ```
 
 **logger.h:**
 ```cpp
 #define FTAE_LOG(level) \
-    if (level <= ftaengine::Logger::report_level()) \
-        ftaengine::Logger().Get(level)
+    if (level <= ftae::Logger::report_level()) \
+        ftae::Logger().Get(level)
 ```
 
 ### 2.6 版本文件更新
@@ -144,7 +144,7 @@ namespace ftaengine {
 
 ```bash
 # 主程序文件
-mv src/scram.cc src/ftaengine.cc
+mv src/scram.cc src/main.cpp
 
 # 目录结构保持，内容更新
 # src/ -> src/ (目录名不变，内部命名空间和宏更新)
@@ -155,7 +155,7 @@ mv src/scram.cc src/ftaengine.cc
 ```bash
 # 替换命名空间
 find src -type f \( -name "*.h" -o -name "*.cc" \) \
-    -exec sed -i 's/namespace scram/namespace ftaengine/g' {} +
+    -exec sed -i 's/namespace scram/namespace ftae/g' {} +
 
 # 替换宏前缀
 find src -type f \( -name "*.h" -o -name "*.cc" \) \
@@ -167,7 +167,7 @@ find src -type f \( -name "*.h" -o -name "*.cc" \) \
 
 # 替换类名（Logger等）
 find src -type f \( -name "*.h" -o -name "*.cc" \) \
-    -exec sed -i 's/scram::/ftaengine::/g' {} +
+    -exec sed -i 's/scram::/ftae::/g' {} +
 ```
 
 ### 2.9 文档更新
@@ -192,7 +192,7 @@ fta-engine is a fault tree analysis engine.
 ```json
 {
   "cacheVariables": {
-    "CMAKE_INSTALL_PREFIX": "${sourceDir}/ftaengine_install"
+    "CMAKE_INSTALL_PREFIX": "${sourceDir}/ftae-install"
   }
 }
 ```
