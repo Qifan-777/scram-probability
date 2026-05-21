@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang ninja-build cmake
+          sudo apt-get install -y clang ninja-build cmake build-essential pkg-config autoconf libtool
 
       - name: Setup vcpkg
         run: |
@@ -24,6 +24,10 @@ jobs:
 
       - name: Remove local vcpkg configuration
         run: rm -f vcpkg-configuration.json
+
+      - name: Add vcpkg baseline
+        run: |
+          ${{ runner.temp }}/vcpkg/vcpkg x-update-baseline --add-initial-baseline
 
       - name: Configure
         run: |
@@ -49,6 +53,10 @@ jobs:
 
       - name: Remove local vcpkg configuration
         run: Remove-Item -Path vcpkg-configuration.json -ErrorAction SilentlyContinue
+
+      - name: Add vcpkg baseline
+        run: |
+          & $env:RUNNER_TEMP\vcpkg\vcpkg.exe x-update-baseline --add-initial-baseline
 
       - name: Configure
         run: |

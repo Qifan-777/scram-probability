@@ -31,5 +31,5 @@
   [] {                                                                     \
     static_assert(sizeof(__FILE__) > sizeof(PROJECT_SOURCE_DIR),           \
                   "The source file is not inside the project directory."); \
-    return __FILE__ + sizeof(PROJECT_SOURCE_DIR);                          \
+    return &__FILE__[sizeof(PROJECT_SOURCE_DIR)];                          \
   }()
