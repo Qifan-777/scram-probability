@@ -61,6 +61,9 @@ void Zbdd::Log() noexcept {
 
 Zbdd::Zbdd(Bdd* bdd, const Settings& settings) noexcept
     : Zbdd(bdd->root(), bdd->coherent(), bdd, settings) {
+  if (settings.intermediate_node_probability()) {
+    gate_index_map_ = bdd->gate_index_map();
+  }
   CHECK_ZBDD(true);
 }
 
@@ -80,6 +83,9 @@ Zbdd::Zbdd(const Pdag* graph, const Settings& settings) noexcept
       const Variable& var = top_gate.args<Variable>().begin()->second;
       root_ = FindOrAddVertex(var.index(), kBase_, kEmpty_, var.order());
     }
+  }
+  if (settings.intermediate_node_probability()) {
+    gate_index_map_ = graph->gate_index_map();
   }
   CHECK_ZBDD(true);
 }

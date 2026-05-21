@@ -439,6 +439,17 @@ void Reporter::ReportResults(const core::RiskAnalysis::Result::Id& id,
     }
   }
 
+  if (!prob_analysis.intermediate_probabilities().empty()) {
+    xml::StreamElement intermediates =
+        results->AddChild("intermediate-probabilities");
+    scram::PutId(id, &intermediates);
+    for (const auto& entry : prob_analysis.intermediate_probabilities()) {
+      intermediates.AddChild("gate")
+          .SetAttribute("name", entry.first)
+          .SetAttribute("probability", entry.second);
+    }
+  }
+
   if (prob_analysis.settings().safety_integrity_levels()) {
     xml::StreamElement sil = results->AddChild("safety-integrity-levels");
     scram::PutId(id, &sil);

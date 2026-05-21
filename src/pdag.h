@@ -942,6 +942,13 @@ class Pdag : private boost::noncopyable {
     return basic_events_;
   }
 
+  /// @returns Mapping from PDAG gate indices to original MEF gates.
+  ///
+  /// @pre This mapping is populated during PDAG construction.
+  const std::unordered_map<int, const mef::Gate*>& gate_index_map() const {
+    return gate_index_map_;
+  }
+
   /// Prints the PDAG in the Aralia format.
   /// This is a helper for logging and debugging.
   /// The output is the standard error.
@@ -1137,6 +1144,7 @@ class Pdag : private boost::noncopyable {
   /// NULL type gates are created by gates with only one argument.
   std::vector<GateWeakPtr> null_gates_;
   std::vector<Substitution> substitutions_;  ///< Non-declarative substitutions.
+  std::unordered_map<int, const mef::Gate*> gate_index_map_;  ///< Mapping for gate indices to original MEF gates.
 };
 
 /// Traverses and visits gates and nodes in the graph.

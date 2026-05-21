@@ -97,7 +97,17 @@ class ProbabilityAnalysis : public Analysis {
     return *sil_;
   }
 
+  /// @returns Intermediate node probabilities for module gates.
+  const std::vector<std::pair<std::string, double>>& intermediate_probabilities()
+      const {
+    return intermediate_probabilities_;
+  }
+
  protected:
+  /// Computes probabilities for intermediate module nodes.
+  virtual void ComputeIntermediateProbabilities() noexcept {}
+
+ private:
   /// @returns The mission time expression of the model.
   mef::MissionTime& mission_time() { return *mission_time_; }
 
@@ -120,6 +130,7 @@ class ProbabilityAnalysis : public Analysis {
   mef::MissionTime* mission_time_;  ///< The mission time expression.
   std::vector<std::pair<double, double>> p_time_;  ///< {probability, time}.
   std::unique_ptr<Sil> sil_;  ///< The Safety Integrity Level results.
+  std::vector<std::pair<std::string, double>> intermediate_probabilities_;
 };
 
 /// Quantitative calculator of a probability value of a single cut set.
@@ -208,6 +219,8 @@ class ProbabilityAnalyzerBase : public ProbabilityAnalysis {
  protected:
   ~ProbabilityAnalyzerBase() override = default;
 
+  void ComputeIntermediateProbabilities() noexcept override;
+
  private:
   /// Calculates the total probability
   /// with a different set of probability values
@@ -228,6 +241,9 @@ class ProbabilityAnalyzerBase : public ProbabilityAnalysis {
   std::vector<std::pair<double, double>>
   CalculateProbabilityOverTime() noexcept final;
 
+  /// Computes probabilities of intermediate ZBDD module nodes recursively.
+  void ComputeZbddIntermediateProbabilities(const Zbdd& zbdd) noexcept;
+
   /// Upon construction of the probability analysis,
   /// stores the variable probabilities in a continuous container
   /// for retrieval by their indices instead of pointers.
@@ -241,6 +257,11 @@ class ProbabilityAnalyzerBase : public ProbabilityAnalysis {
   const Pdag* graph_;  ///< PDAG from the fault tree analysis.
   const Zbdd& products_;  ///< A collection of products.
   Pdag::IndexMap<double> p_vars_;  ///< Variable probabilities.
+  /// Calculates the probability of a ZBDD using the specific calculator.
+  virtual double CalculateZbddProbability(const Zbdd& zbdd) const noexcept {
+    assert(false && "ZBDD probability not supported by this calculator.");
+    return 0;
+  }
 };
 
 /// Fault-tree-analysis-aware probability analyzer.
@@ -255,6 +276,10 @@ class ProbabilityAnalyzer : public ProbabilityAnalyzerBase {
   double CalculateTotalProbability(
       const Pdag::IndexMap<double>& p_vars) noexcept final {
     return calc_.Calculate(ProbabilityAnalyzerBase::products(), p_vars);
+  }
+
+  double CalculateZbddProbability(const Zbdd& zbdd) const noexcept override {
+    return calc_.Calculate(zbdd, p_vars_);
   }
 
  private:
@@ -301,6 +326,8 @@ class ProbabilityAnalyzer<Bdd> : public ProbabilityAnalyzerBase {
 
   double CalculateTotalProbability(
       const Pdag::IndexMap<double>& p_vars) noexcept final;
+
+  void ComputeIntermediateProbabilities() noexcept override;
 
  private:
   /// Creates a new BDD for use by the analyzer.

@@ -751,6 +751,11 @@ class Bdd : private boost::noncopyable {
     return index_to_order_;
   }
 
+  /// @returns Mapping from PDAG gate indices to original MEF gates.
+  const std::unordered_map<int, const mef::Gate*>& gate_index_map() const {
+    return gate_index_map_;
+  }
+
   /// @returns true if the BDD has been constructed from a coherent PDAG.
   bool coherent() const { return coherent_; }
 
@@ -981,6 +986,7 @@ class Bdd : private boost::noncopyable {
   /// @}
 
   std::unordered_map<int, Function> modules_;  ///< Module graphs.
+  std::unordered_map<int, const mef::Gate*> gate_index_map_;  ///< Gate index mapping.
   std::unordered_map<int, int> index_to_order_;  ///< Indices and orders.
   const TerminalPtr kOne_;  ///< Terminal True.
   int function_id_;  ///< Identification assignment for new function graphs.

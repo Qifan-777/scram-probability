@@ -71,6 +71,8 @@ po::options_description ConstructOptions() {
       ("mocus", "Perform qualitative analysis with MOCUS")
       ("prime-implicants", "Calculate prime implicants")
       ("probability", "Perform probability analysis")
+      ("intermediate-probability",
+       "Output probabilities of intermediate nodes (module gates)")
       ("importance", "Perform importance analysis")
       ("uncertainty", "Perform uncertainty analysis")
       ("ccf", "Perform common-cause failure analysis")
@@ -220,6 +222,7 @@ void ConstructSettings(const po::variables_map& vm,
   settings->safety_integrity_levels(vm.count("sil"));
 
   settings->probability_analysis(vm.count("probability"));
+  settings->intermediate_node_probability(vm.count("intermediate-probability"));
   settings->importance_analysis(vm.count("importance"));
   settings->uncertainty_analysis(vm.count("uncertainty"));
   settings->ccf_analysis(vm.count("ccf"));

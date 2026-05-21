@@ -63,6 +63,9 @@ Bdd::Bdd(const Pdag* graph, const Settings& settings)
     root_ = ConvertGraph(graph->root(), &gates);
     root_.complement ^= graph->complement();
   }
+  if (kSettings_.intermediate_node_probability()) {
+    gate_index_map_ = graph->gate_index_map();
+  }
   ClearMarks(false);
   TestStructure(root_.vertex);
   LOG(DEBUG4) << "# of BDD vertices created: " << function_id_ - 1;

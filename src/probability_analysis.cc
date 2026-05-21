@@ -49,6 +49,7 @@ void ProbabilityAnalysis::Analyze() noexcept {
   p_time_ = this->CalculateProbabilityOverTime();
   if (Analysis::settings().safety_integrity_levels())
     ComputeSil();
+  ComputeIntermediateProbabilities();
   LOG(DEBUG3) << "Finished probability calculations in " << DUR(p_time);
   Analysis::AddAnalysisTime(DUR(p_time));
 }
@@ -230,6 +231,24 @@ ProbabilityAnalyzer<Bdd>::~ProbabilityAnalyzer() noexcept {
     delete bdd_graph_;
 }
 
+void ProbabilityAnalyzer<Bdd>::ComputeIntermediateProbabilities() noexcept {
+  if (!Analysis::settings().intermediate_node_probability())
+    return;
+  assert(bdd_graph_);
+  for (const auto& entry : bdd_graph_->modules()) {
+    int index = entry.first;
+    const Bdd::Function& function = entry.second;
+    double prob =
+        CalculateProbability(function.vertex, current_mark_, p_vars_);
+    if (function.complement)
+      prob = 1 - prob;
+    auto it = bdd_graph_->gate_index_map().find(index);
+    if (it != bdd_graph_->gate_index_map().end()) {
+      intermediate_probabilities_.emplace_back(it->second->id(), prob);
+    }
+  }
+}
+
 double ProbabilityAnalyzer<Bdd>::CalculateTotalProbability(
     const Pdag::IndexMap<double>& p_vars) noexcept {
   CLOCK(calc_time);  // BDD based calculation time.
@@ -248,7 +267,7 @@ void ProbabilityAnalyzer<Bdd>::CreateBdd(
   CLOCK(total_time);
 
   CLOCK(ft_creation);
-  Pdag graph(fta.top_event(), Analysis::settings().ccf_analysis());
+  Pdag graph(fta.top_event(), Analysis::settings().ccf_analysis(), fta.model());
   LOG(DEBUG2) << "PDAG is created in " << DUR(ft_creation);
 
   CLOCK(prep_time);  // Overall preprocessing time.
@@ -262,6 +281,26 @@ void ProbabilityAnalyzer<Bdd>::CreateBdd(
   LOG(DEBUG2) << "BDD is created in " << DUR(bdd_time);
 
   Analysis::AddAnalysisTime(DUR(total_time));
+}
+
+void ProbabilityAnalyzerBase::ComputeIntermediateProbabilities() noexcept {
+  if (!Analysis::settings().intermediate_node_probability())
+    return;
+  ComputeZbddIntermediateProbabilities(products_);
+}
+
+void ProbabilityAnalyzerBase::ComputeZbddIntermediateProbabilities(
+    const Zbdd& zbdd) noexcept {
+  for (const auto& entry : zbdd.modules()) {
+    int index = entry.first;
+    const Zbdd* module = entry.second.get();
+    double prob = CalculateZbddProbability(*module);
+    auto it = products_.gate_index_map().find(index);
+    if (it != products_.gate_index_map().end()) {
+      intermediate_probabilities_.emplace_back(it->second->id(), prob);
+    }
+    ComputeZbddIntermediateProbabilities(*module);
+  }
 }
 
 double ProbabilityAnalyzer<Bdd>::CalculateProbability(

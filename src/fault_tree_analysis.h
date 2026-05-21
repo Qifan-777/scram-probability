@@ -215,6 +215,9 @@ class FaultTreeAnalysis : public Analysis {
   /// @returns The top gate that is passed to the analysis.
   const mef::Gate& top_event() const { return top_event_; }
 
+  /// @returns The model containing the fault tree.
+  const mef::Model* model() const { return model_; }
+
   /// Analyzes the fault tree and performs computations.
   /// This function must be called
   /// only after initializing the fault tree

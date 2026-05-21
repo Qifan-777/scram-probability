@@ -467,6 +467,12 @@ Pdag::Pdag(const mef::Gate& root, bool ccf, const mef::Model* model) noexcept
 
   root_ = ConstructGate(root.formula(), ccf, &nodes);
 
+  for (const auto& entry : nodes.gates) {
+    if (entry.second) {
+      gate_index_map_.emplace(entry.second->index(), entry.first);
+    }
+  }
+
   if (model) {  // Process substitution application.
     auto application = std::make_shared<Gate>(kAnd, this);
     for (const mef::Substitution& substitution : model->substitutions()) {

@@ -389,6 +389,11 @@ class Zbdd : private boost::noncopyable {
     return modules_;
   }
 
+  /// @returns Mapping from PDAG gate indices to original MEF gates.
+  const std::unordered_map<int, const mef::Gate*>& gate_index_map() const {
+    return gate_index_map_;
+  }
+
   /// Logs properties of the Zbdd.
   void Log() noexcept;
 
@@ -873,6 +878,7 @@ class Zbdd : private boost::noncopyable {
   PairTable<VertexPtr> prune_results_;
 
   std::map<int, std::unique_ptr<Zbdd>> modules_;  ///< Module graphs.
+  std::unordered_map<int, const mef::Gate*> gate_index_map_;  ///< Gate index mapping.
   int set_id_;  ///< Identification assignment for new set graphs.
 };
 

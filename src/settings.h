@@ -287,6 +287,21 @@ class Settings {
     return *this;
   }
 
+  /// @returns true if intermediate node probabilities are to be calculated.
+  bool intermediate_node_probability() const {
+    return intermediate_node_probability_;
+  }
+
+  /// Sets the flag for intermediate node probability analysis.
+  ///
+  /// @param[in] flag  True or false for turning on or off the analysis.
+  ///
+  /// @returns Reference to this object.
+  Settings& intermediate_node_probability(bool flag) {
+    intermediate_node_probability_ = flag;
+    return *this;
+  }
+
 #ifndef NDEBUG
   bool preprocessor = false;  ///< Stop analysis after preprocessor.
   bool print = false;  ///< Print analysis results in a terminal friendly way.
@@ -298,6 +313,7 @@ class Settings {
   bool importance_analysis_ = false;  ///< A flag for importance analysis.
   bool uncertainty_analysis_ = false;  ///< A flag for uncertainty analysis.
   bool ccf_analysis_ = false;  ///< A flag for common-cause analysis.
+  bool intermediate_node_probability_ = false;  ///< A flag for intermediate node probability output.
   bool prime_implicants_ = false;  ///< Calculation of prime implicants.
   /// Qualitative analysis algorithm.
   Algorithm algorithm_ = Algorithm::kBdd;
