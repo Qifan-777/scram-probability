@@ -130,6 +130,7 @@ class ProbabilityAnalysis : public Analysis {
   mef::MissionTime* mission_time_;  ///< The mission time expression.
   std::vector<std::pair<double, double>> p_time_;  ///< {probability, time}.
   std::unique_ptr<Sil> sil_;  ///< The Safety Integrity Level results.
+ protected:
   std::vector<std::pair<std::string, double>> intermediate_probabilities_;
 };
 

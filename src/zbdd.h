@@ -389,10 +389,13 @@ class Zbdd : private boost::noncopyable {
     return modules_;
   }
 
+ public:
   /// @returns Mapping from PDAG gate indices to original MEF gates.
   const std::unordered_map<int, const mef::Gate*>& gate_index_map() const {
     return gate_index_map_;
   }
+
+ protected:
 
   /// Logs properties of the Zbdd.
   void Log() noexcept;
