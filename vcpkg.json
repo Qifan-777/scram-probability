@@ -1,4 +1,5 @@
 {
+  "builtin-baseline": "761c81d43335a5d5ccc2ec8ad90bd7e2cbba734e",
   "dependencies": [
     "libxml2",
     "boost"

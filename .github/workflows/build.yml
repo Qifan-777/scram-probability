@@ -30,20 +30,24 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
+    env:
+      VCPKG_ROOT: C:\vcpkg
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup vcpkg
-        run: |
-          git clone --depth 1 https://github.com/microsoft/vcpkg.git $env:RUNNER_TEMP\vcpkg
-          & $env:RUNNER_TEMP\vcpkg\bootstrap-vcpkg.bat
 
       - name: Remove local vcpkg configuration
         run: Remove-Item -Path vcpkg-configuration.json -ErrorAction SilentlyContinue
 
-      - name: Add vcpkg baseline
-        run: |
-          & $env:RUNNER_TEMP\vcpkg\vcpkg.exe x-update-baseline --add-initial-baseline
+      - name: Cache vcpkg packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ github.workspace }}/build/vcpkg_installed
+            C:\vcpkg\downloads
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
+            vcpkg-${{ runner.os }}-
 
       - name: Configure
         run: |
@@ -52,7 +56,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release `
             -DCMAKE_C_COMPILER=clang `
             -DCMAKE_CXX_COMPILER=clang++ `
-            -DCMAKE_TOOLCHAIN_FILE="$env:RUNNER_TEMP\vcpkg\scripts\buildsystems\vcpkg.cmake"
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake"
 
       - name: Build
         run: cmake --build build --parallel
