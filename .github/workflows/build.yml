@@ -15,19 +15,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang ninja-build cmake build-essential pkg-config autoconf libtool
-
-      - name: Setup vcpkg
-        run: |
-          git clone --depth 1 https://github.com/microsoft/vcpkg.git ${{ runner.temp }}/vcpkg
-          ${{ runner.temp }}/vcpkg/bootstrap-vcpkg.sh
-
-      - name: Remove local vcpkg configuration
-        run: rm -f vcpkg-configuration.json
-
-      - name: Add vcpkg baseline
-        run: |
-          ${{ runner.temp }}/vcpkg/vcpkg x-update-baseline --add-initial-baseline
+          sudo apt-get install -y clang ninja-build cmake libboost-all-dev libxml2-dev
 
       - name: Configure
         run: |
@@ -35,8 +23,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_C_COMPILER=clang \
-            -DCMAKE_CXX_COMPILER=clang++ \
-            -DCMAKE_TOOLCHAIN_FILE=${{ runner.temp }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            -DCMAKE_CXX_COMPILER=clang++
 
       - name: Build
         run: cmake --build build --parallel

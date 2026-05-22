@@ -107,7 +107,6 @@ class ProbabilityAnalysis : public Analysis {
   /// Computes probabilities for intermediate module nodes.
   virtual void ComputeIntermediateProbabilities() noexcept {}
 
- private:
   /// @returns The mission time expression of the model.
   mef::MissionTime& mission_time() { return *mission_time_; }
 
@@ -257,7 +256,9 @@ class ProbabilityAnalyzerBase : public ProbabilityAnalysis {
 
   const Pdag* graph_;  ///< PDAG from the fault tree analysis.
   const Zbdd& products_;  ///< A collection of products.
+ protected:
   Pdag::IndexMap<double> p_vars_;  ///< Variable probabilities.
+ private:
   /// Calculates the probability of a ZBDD using the specific calculator.
   virtual double CalculateZbddProbability(const Zbdd& zbdd) const noexcept {
     assert(false && "ZBDD probability not supported by this calculator.");
